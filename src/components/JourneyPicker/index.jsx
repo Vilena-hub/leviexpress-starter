@@ -2,6 +2,17 @@ import React, { useEffect, useState } from 'react';
 import mapImage from './img/map.svg';
 import './style.css';
 
+
+const DatesOptions = ({dates}) => {
+
+  return (
+   <>
+            <option value="">Vyberte</option>
+            {dates.map(date=><option key={date.dateBasic} value={date.dateBasic}>{date.dateExtended}</option>)}
+   </>
+  )
+};
+
 const CityOptions = ({cities}) => {
   return (
     <>
@@ -23,6 +34,16 @@ export const JourneyPicker = ({ onJourneyChange }) => {
    []
   )
 
+  useEffect (
+    () => {
+      fetch('https://leviexpress-backend.herokuapp.com/api/dates')
+      .then(response=>response.json())
+      .then(json=>setDates(json.data))
+    },
+    []
+   )
+
+
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log('formulář odeslán')
@@ -33,6 +54,14 @@ export const JourneyPicker = ({ onJourneyChange }) => {
   const [toCity, setToCity]=useState(" ");
   const [date, setDate]=useState(" ");
   const [cities, setCities]=useState([]);
+  const [dates, setDates]=useState([{
+    "dateBasic": "28.05.2021",
+    "dateExtended": "pá 28. květen 2021"
+  },
+  {
+    "dateBasic": "29.05.2021",
+    "dateExtended": "so 29. květen 2021"
+  },]);
 
   const handleFromCity = (event) => {
     setFromCity(event.target.value);
@@ -67,12 +96,7 @@ export const JourneyPicker = ({ onJourneyChange }) => {
         <label>
           <div className="journey-picker__label">Datum:</div>
           <select value={date} onChange={handleDate}>
-            <option value="">Vyberte</option>
-            <option value="datum01">Datum 01</option>
-            <option value="datum02">Datum 02</option>
-            <option value="datum03">Datum 03</option>
-            <option value="datum04">Datum 04</option>
-            <option value="datum05">Datum 05</option>
+           <DatesOptions dates={dates}/>
           </select>
         </label>
         <div className="journey-picker__controls">
