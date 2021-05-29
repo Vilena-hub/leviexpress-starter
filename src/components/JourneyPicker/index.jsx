@@ -43,11 +43,9 @@ export const JourneyPicker = ({ onJourneyChange }) => {
     []
    )
 
-
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log('formulář odeslán')
-    console.log(fromCity,toCity,date);
+    onJourneyChange(fromCity,toCity,date);
   }
 
   const [fromCity, setFromCity]=useState(" ");
@@ -103,6 +101,8 @@ export const JourneyPicker = ({ onJourneyChange }) => {
           <button 
             className="btn" 
             type="submit"
+            disabled={fromCity===" " || toCity===" " || date===" "}
+            onSubmit={handleSubmit}
           > 
             Vyhledat spoj
           </button>
